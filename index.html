@@ -22,7 +22,7 @@
 
         /* The "Active" Symbol Glow */
         .neon-blue {
-            text-shadow: 0 0 10px #22d3ee, 0 0 20px #22d3ee; 
+            text-shadow: 0 0 10px #22d3ee, 0 0 30px #22d3ee; 
             opacity: 1;
             transform: scale(1.0);
             filter: blur(0px);
@@ -69,36 +69,19 @@
     <div class="w-full max-w-screen-xl bg-[url('box.png')] bg-[length:100%_100%] bg-no-repeat rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.9)] p-4 md:p-8 flex flex-row items-center gap-4 md:gap-8 z-10">
         
         <!-- 
-            DISPLAY AREA (5 Inset Boxes) 
-            Style update: Added heavy inset shadows to create depth
+            DISPLAY AREA (One Big Black Box) 
+            - Removed individual div wrappers.
+            - Added 'justify-around' to space the spans evenly.
+            - Added deep inset shadow for the whole screen.
         -->
-        <div class="flex-1 flex flex-row justify-between gap-2 md:gap-4 h-32 md:h-52 ">
+        <div class="flex-1 bg-black rounded-lg shadow-[inset_0_0_50px_rgba(0,0,0,1)] border border-white/10 flex justify-around items-center py-6 md:py-12 overflow-hidden relative">
             
-            <!-- Box 1 -->
-            <div class="flex-1 bg-[#050505] rounded-lg shadow-[inset_3px_3px_8px_rgba(0,0,0,1),inset_-1px_-1px_2px_rgba(255,255,255,0.1)] flex justify-center items-center overflow-hidden border border-black/80">
-                <span class="symbol-slot material-symbols-outlined text-3xl sm:text-4xl md:text-6xl lg:text-7xl transition-all duration-1000 ease-out void-black"></span>
-            </div>
-
-            <!-- Box 2 -->
-            <div class="flex-1 bg-[#050505] rounded-lg shadow-[inset_3px_3px_8px_rgba(0,0,0,1),inset_-1px_-1px_2px_rgba(255,255,255,0.1)] flex justify-center items-center overflow-hidden border border-black/80">
-                <span class="symbol-slot material-symbols-outlined text-3xl sm:text-4xl md:text-6xl lg:text-7xl transition-all duration-1000 ease-out void-black"></span>
-            </div>
-
-            <!-- Box 3 -->
-            <div class="flex-1 bg-[#050505] rounded-lg shadow-[inset_3px_3px_8px_rgba(0,0,0,1),inset_-1px_-1px_2px_rgba(255,255,255,0.1)] flex justify-center items-center overflow-hidden border border-black/80">
-                <span class="symbol-slot material-symbols-outlined text-3xl sm:text-4xl md:text-6xl lg:text-7xl transition-all duration-1000 ease-out void-black"></span>
-            </div>
-
-            <!-- Box 4 -->
-            <div class="flex-1 bg-[#050505] rounded-lg shadow-[inset_3px_3px_8px_rgba(0,0,0,1),inset_-1px_-1px_2px_rgba(255,255,255,0.1)] flex justify-center items-center overflow-hidden border border-black/80">
-                <span class="symbol-slot material-symbols-outlined text-3xl sm:text-4xl md:text-6xl lg:text-7xl transition-all duration-1000 ease-out void-black"></span>
-            </div>
-
-            <!-- Box 5 -->
-            <div class="flex-1 bg-[#050505] rounded-lg shadow-[inset_3px_3px_8px_rgba(0,0,0,1),inset_-1px_-1px_2px_rgba(255,255,255,0.1)] flex justify-center items-center overflow-hidden border border-black/80">
-                <span class="symbol-slot material-symbols-outlined text-3xl sm:text-4xl md:text-6xl lg:text-7xl transition-all duration-1000 ease-out void-black"></span>
-            </div>
-
+            <span class="symbol-slot material-symbols-outlined text-4xl sm:text-5xl md:text-7xl lg:text-8xl w-1/5 text-center transition-all duration-1000 ease-out void-black"></span>
+            <span class="symbol-slot material-symbols-outlined text-4xl sm:text-5xl md:text-7xl lg:text-8xl w-1/5 text-center transition-all duration-1000 ease-out void-black"></span>
+            <span class="symbol-slot material-symbols-outlined text-4xl sm:text-5xl md:text-7xl lg:text-8xl w-1/5 text-center transition-all duration-1000 ease-out void-black"></span>
+            <span class="symbol-slot material-symbols-outlined text-4xl sm:text-5xl md:text-7xl lg:text-8xl w-1/5 text-center transition-all duration-1000 ease-out void-black"></span>
+            <span class="symbol-slot material-symbols-outlined text-4xl sm:text-5xl md:text-7xl lg:text-8xl w-1/5 text-center transition-all duration-1000 ease-out void-black"></span>
+        
         </div>
 
         <!-- SENSOR PAD -->
@@ -112,7 +95,7 @@
         ?
     </button>
 
-    <!-- HELP PANEL (Minimal) -->
+    <!-- HELP PANEL -->
     <div id="helpPanel" class="help-panel fixed bottom-0 left-0 w-full bg-[#0d0d0d] border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.9)] transform translate-y-full z-40 max-h-[85vh] overflow-y-auto">
         <div class="max-w-screen-sm mx-auto p-8 pb-20 text-[#c9d1d9] text-center">
             
