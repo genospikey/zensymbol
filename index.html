@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Flux Sensor</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,0" rel="stylesheet" />
+
+    <style>
+        body {
+            background-image: url('table.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #111; 
+        }
+
+        /* The "Active" Symbol Glow - 100% Opacity */
+        .neon-blue {
+            text-shadow: 0 0 10px #22d3ee, 0 0 30px #22d3ee; 
+            opacity: 1;
+            transform: scale(1.0);
+            filter: blur(0px);
+        }
+
+        /* The "Inactive" State - 0% Opacity */
+        .void-black {
+            color: black;
+            text-shadow: none;
+            opacity: 0; 
+            transform: scale(0.95);
+            filter: blur(4px);
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+            display: inline-block;
+            line-height: 1;
+            min-height: 1em; 
+        }
+
+        /* Pulse animation for the IDLE sensor */
+        @keyframes pulse-idle {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); border-color: #7f1d1d; }
+            50% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); border-color: #991b1b; }
+        }
+
+        /* Animation for the ACTIVE (held) sensor */
+        @keyframes pulse-active {
+            0% { box-shadow: 0 0 10px 5px rgba(220, 38, 38, 0.6); border-color: #ef4444; }
+            100% { box-shadow: 0 0 20px 10px rgba(220, 38, 38, 0.8); border-color: #f87171; }
+        }
+
+        .sensor-idle { animation: pulse-idle 3s infinite; }
+        .sensor-active { animation: pulse-active 0.5s infinite alternate; }
+    </style>
+</head>
+<body class="h-screen flex justify-center items-center overflow-hidden select-none p-4 md:p-8">
+
+    <!-- MAIN CONTAINER -->
+    <div class="w-full max-w-screen-xl bg-[url('box.png')] bg-[length:100%_100%] bg-no-repeat rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.9)] p-4 md:p-6 flex flex-row items-center gap-4 md:gap-6">
+        
+        <!-- DISPLAY AREA -->
+        <div class="flex-1 bg-black rounded-lg shadow-[inset_0_0_40px_rgba(0,0,0,0.9)] flex justify-around items-center py-6 md:py-12 overflow-hidden border border-red-900/30 relative">
+            
+            <!-- 5 Slots -->
+            <span class="symbol-slot material-symbols-outlined text-4xl sm:text-5xl md:text-7xl lg:text-8xl w-1/5 text-center transition-all duration-1000 ease-out void-black"></span>
+            <span class="symbol-slot material-symbols-outlined text-4xl sm:text-5xl md:text-7xl lg:text-8xl w-1/5 text-center transition-all duration-1000 ease-out void-black"></span>
+            <span class="symbol-slot material-symbols-outlined text-4xl sm:text-5xl md:text-7xl lg:text-8xl w-1/5 text-center transition-all duration-1000 ease-out void-black"></span>
+            <span class="symbol-slot material-symbols-outlined text-4xl sm:text-5xl md:text-7xl lg:text-8xl w-1/5 text-center transition-all duration-1000 ease-out void-black"></span>
+            <span class="symbol-slot material-symbols-outlined text-4xl sm:text-5xl md:text-7xl lg:text-8xl w-1/5 text-center transition-all duration-1000 ease-out void-black"></span>
+        
+        </div>
+
+        <!-- SENSOR PAD -->
+        <div id="sensorPad" class="sensor-idle cursor-crosshair flex-none w-20 h-20 md:w-32 md:h-32 bg-black rounded-full shadow-lg border-4 transition-all duration-200 relative overflow-hidden">
+        </div>
+
+    </div>
+
+    <script>
+        // Updated Themes with Animals & Ice/Crystals
+        const themes = {
+            buildup: [
+                'trending_up', 'stairs', 'north_east', 'fast_forward', 'hourglass_top', 
+                'rocket_launch', 'upgrade', 'construction', 'timeline', 'add_circle', 
+                'publish', 'pending'
+            ],
+            characters: [
+                // Humans & Emotions
+                'face', 'person', 'groups', 'sentiment_satisfied', 'sentiment_dissatisfied', 
+                'psychology', 'emoji_people', 'theater_comedy', 'mood_bad',
+                // Added Animals
+                'cruelty_free',     // Rabbit
+                'flutter_dash',     // Bird
+                'pest_control_rodent', // Mouse/Rat
+                'pets',             // Paw Print (Generic Animal/Dog/Cat)
+                'bug_report',       // Insect
+                'savings'           // Pig (Piggy Bank)
+            ],
+            setting: [
+                // Standard Settings
+                'landscape', 'home', 'apartment', 'cottage', 'castle', 'forest', 
+                'stadium', 'store', 'school', 'church', 'public', 'sunny',
+                // Added Ice / Crystal / Cold Settings
+                'ac_unit',          // Snowflake
+                'crystallize',      // Crystals
+                'severe_cold',      // Freezing Temp
+                'weather_snowy',    // Snowing
+                'diamond',          // Crystal/Jewel
+                'landslide'         // Mountains/Rocks/Avalanche
+            ],
+            climax: [
+                'flash_on', 'warning', 'priority_high', 'bolt', 'crisis_alert', 
+                'local_fire_department', 'broken_image', 'thunderstorm', 'gavel', 
+                'report_problem', 'campaign', 'dangerous',
+                'cyclone',          // Tornado/Storm
+                'tsunami'           // Flood
+            ],
+            resolution: [
+                'done_all', 'check_circle', 'handshake', 'flag', 'emoji_events', 
+                'task_alt', 'celebration', 'star', 'auto_awesome', 'verified', 
+                'nightlight', 'exit_to_app'
+            ]
+        };
+
+        const slots = Array.from(document.querySelectorAll('.symbol-slot'));
+        const sensor = document.getElementById('sensorPad');
+        
+        const INACTIVE_CLASSES = ['void-black'];
+        const ACTIVE_CLASSES = ['text-cyan-400', 'neon-blue'];
+
+        let revealTimers = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // --- ENGAGE ---
+        function engageSensor() {
+            sensor.classList.remove('sensor-idle');
+            sensor.classList.add('sensor-active');
+
+            revealTimers.forEach(clearTimeout);
+            revealTimers = [];
+
+            const themeKeys = Object.keys(themes);
+            // Shuffle themes to randomize narrative order
+            const shuffledThemes = shuffleArray([...themeKeys]);
+            
+            // 1. Set Content Immediately (Hidden)
+            slots.forEach((slot, index) => {
+                const themeName = shuffledThemes[index];
+                const themeIcons = themes[themeName];
+                const randomIcon = themeIcons[Math.floor(Math.random() * themeIcons.length)];
+                
+                slot.textContent = randomIcon;
+                
+                slot.classList.add(...INACTIVE_CLASSES);
+                slot.classList.remove(...ACTIVE_CLASSES);
+            });
+
+            // 2. Slow Staggered Reveal
+            slots.forEach((slot, index) => {
+                const timerId = setTimeout(() => {
+                    slot.classList.remove(...INACTIVE_CLASSES);
+                    slot.classList.add(...ACTIVE_CLASSES);
+                }, index * 300); 
+                
+                revealTimers.push(timerId);
+            });
+        }
+
+        // --- DISENGAGE ---
+        function disengageSensor() {
+            sensor.classList.remove('sensor-active');
+            sensor.classList.add('sensor-idle');
+
+            revealTimers.forEach(clearTimeout);
+            revealTimers = [];
+
+            slots.forEach(slot => {
+                slot.classList.remove(...ACTIVE_CLASSES);
+                slot.classList.add(...INACTIVE_CLASSES);
+            });
+        }
+
+        // --- LISTENERS ---
+        sensor.addEventListener('mouseenter', engageSensor);
+        sensor.addEventListener('mouseleave', disengageSensor);
+
+        sensor.addEventListener('touchstart', (e) => {
+            e.preventDefault(); 
+            engageSensor();
+        }, { passive: false });
+
+        sensor.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            disengageSensor();
+        });
+
+        // Initialize invisible placeholder
+        slots.forEach(slot => slot.textContent = 'circle'); 
+
+    </script>
+</body>
+</html>
